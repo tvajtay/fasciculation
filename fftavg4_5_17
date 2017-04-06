@@ -1,4 +1,4 @@
-function [] = fftavg( start_directory )
+function [] = fftavg2( start_directory )
 %UNTITLED3 wiggle wiggle
 %   Is she wiggling? 
 
@@ -22,10 +22,8 @@ function [P1] = notFourier(F)
 end
 
 function[] = plotsave(avg)
-%       avgData = average(rawData);
         Fs = 500;                                 %sampling frequency
-        %f = Fs*(1:400/2)/400;                    %stuff
-        f = Fs*(1:400)/400;
+        f = Fs*(1:400/2)/400;                    %stuff
         
         plot(f,avg)                                          %plotting the fft analysis for each whisker
         axis([0 75 0 2]);                                    %[xmin xmax ymin ymax]
