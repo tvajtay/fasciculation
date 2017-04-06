@@ -32,10 +32,10 @@ function[] = plotsave(avg)
         ylabel('|Power|')
        
         fprintf('Data spans %.2f seconds\n', T);
-        tt = sprintf('%s',x(1).folder(end-2:end));
-        jj = sprintf('%s',x(1).folder(end-12:end-4));
-        figname = sprintf('%s-%s',jj,tt);
-        saveas(gcf, figname, 'fig');  %ERROR in saving due to lines 43 - 51 changing size of name
+        folder = cd;
+        jj = sprintf('%s',folder(end-2:end)); %Folder name for cumulative graph
+        figname = sprintf('%s-fft',jj);
+        saveas(gcf, figname, 'fig');  
         saveas(gcf, figname, 'png');
         close all;
 end %the fft function
