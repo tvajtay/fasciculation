@@ -26,7 +26,7 @@ function[] = plotsave(avg)
         f = Fs*(1:400/2)/400;                    %stuff
         
         plot(f,avg)                                          %plotting the fft analysis for each whisker
-        axis([0 75 0 2]);                                    %[xmin xmax ymin ymax]
+        axis([0 75 0 1]);                                    %[xmin xmax ymin ymax]
         title('Single-Sided Amplitude Spectrum of F(t)')
         xlabel('Frequency (Hz)')
         ylabel('|Power|')
@@ -35,7 +35,7 @@ function[] = plotsave(avg)
         folder = cd;
         jj = sprintf('%s',folder(end-2:end)); %Folder name for cumulative graph
         figname = sprintf('%s-fft',jj);
-        saveas(gcf, figname, 'fig');  
+        saveas(gcf, figname, 'fig');  %ERROR in saving due to lines 43 - 51 changing size of name
         saveas(gcf, figname, 'png');
         close all;
 end %the fft function
@@ -68,8 +68,8 @@ data_array = struct2array(data_array);
 
         else if fil > 1 
                 avgData = [];
-                oneWhisker = [];
                 for yy=1:numWhiskers
+                    oneWhisker = [];
                     for ii=1:fil
                       data_array = load(x(ii).name);  
                       data_array = struct2array(data_array);
