@@ -5,7 +5,7 @@ function [] = fftavg2( start_directory )
 function [fold_detect,file_detect] = detector(path)
         cd(path)
         b = dir();
-        files = dir('*.mat');
+        files = dir('*.whiskers');
         isub = [b(:).isdir];
         nameFolds = {b(isub).name}';
         nameFolds(ismember(nameFolds,{'.','..'})) = [];
@@ -23,15 +23,11 @@ end
 
 function[] = wrapper(path)
     cd(path);
-    p = dir('jit*.mat');                          %directory of jit mat files
-    jitlength = length(p);                        %length of directory of jit files
-    x = dir('*.mat');                             %directory of all .mat files including jit
-        if jitlength > 0                          %if there are jit files present
-            x = x(1:jitlength);                   %returns just .mat files w/o jit
-        end                                 
+    x = dir('*.whiskers');              
                                 
     for j = 1:length(x)
-        data_array = load(x(j).name);
+        nam = sprintf('%smat',x(j).name(1:18));
+        data_array = load(nam);
         data_array = struct2array(data_array);
         c = nanmean(data_array(1:400,:));                      %select first 400 points from each column and finds average of each column
         t = data_array(1:400,:);                               %first 400 points for each column
