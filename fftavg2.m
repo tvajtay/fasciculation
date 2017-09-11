@@ -45,7 +45,6 @@ end
 tstart = tic;
 working_directory = cd;
 addpath(cd)
-addpath matlab
 addpath(start_directory);
 cd (start_directory);
 
@@ -62,6 +61,7 @@ if fold > 0
     fprintf('Scanning all subdirectories from starting directory\n');
     D = rdir(target);             %// List of all sub-directories
     for k = 1:length(D)
+        currpath = D(k).name;
         [~,fil] = detector(currpath);
         fprintf('Checking %s for mat files\n', currpath);
         if fil > 0
