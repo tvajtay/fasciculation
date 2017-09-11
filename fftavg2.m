@@ -33,7 +33,7 @@ function[] = wrapper(path)
         t = data_array(1:400,:);                               %first 400 points for each column
         F = bsxfun(@minus,t,c);                                %function to subtract vector average from array
         F = notFourier(F); %#ok<NASGU>
-        fname = sprintf('fft-%s.mat',x(j).name);
+        fname = sprintf('fft-%s',nam);
         save(fname,'F');
     end
 end
