@@ -40,6 +40,19 @@ function[] = plotsave(avg)
         close all;
 end %the fft function
 
+    function[] = wrapper(path)
+        p = dir('jit*.mat');                          %directory of jit mat files
+        jitlength = length(p);                        %length of directory of jit files
+        x = dir('*.mat');                             %directory of all .mat files including jit
+            if jitlength > 0                          %if there are jit files present
+                x = x(1:jitlength);                   %returns just .mat files w/o jit
+            end                                 
+        fi = length(x);                              %length of directory of .mat files w/o jit files
+        data_array = load(x(1).name);
+        data_array = struct2array(data_array);
+        [~,numWhiskers] = size(data_array); 
+    end
+
 tstart = tic;
 working_directory = cd;
 addpath(cd)
@@ -59,33 +72,21 @@ if fold > 0
     target = [start_directory '\**\*.'];
     fprintf('Scanning all subdirectories from starting directory\n');
     D = rdir(target);             %// List of all sub-directories
-    for k = 1:length(D)
+    for k = 1:length(D)data_array = load(x(1).name);
+        data_array = struct2array(data_array);
+        [~,numWhiskers] = size(data_array); 
         currpath = D(k).name;
         [~,fil] = detector(currpath);
         fprintf('Checking %s for tif files\n', currpath);
         if fil > 0
-            
-            
+            wrapper(currpath);
         end
     end
+end
 
-p = dir('jit*.mat');                          %directory of jit mat files
-jitlength = length(p);                        %length of directory of jit files
-x = dir('*.mat');                             %directory of all .mat files including jit
-    if jitlength > 0                          %if there are jit files present
-        x = x(1:jitlength);                   %returns just .mat files w/o jit
-    end                                 
-fil = length(x);                              %length of directory of .mat files w/o jit files
 
-    if fil < 1
-     fprintf('error: no files found.\n');
-    end
 
-data_array = load(x(1).name);
-data_array = struct2array(data_array);
-[~,numWhiskers] = size(data_array); 
-
-    if fil == 1
+    working_directory = cd;if fil == 1
         c = nanmean(data_array(1:400,:));                              %select first 400 points from each column and finds average of each column
         t = data_array(1:400,:);                                       %first 400 points for each column
         rawData = bsxfun(@minus,t,c);                                  %function to subtract vector average from array
