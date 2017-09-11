@@ -2,17 +2,17 @@ function [] = fftavg2( start_directory )
 %UNTITLED3 wiggle wiggle
 %   Is she wiggling? 
 
-% function [fold_detect,file_detect] = detector(path)
-%         cd(path)
-%         b = dir();
-%         files = dir('*.mat');
-%         isub = [b(:).isdir];
-%         nameFolds = {b(isub).name}';
-%         nameFolds(ismember(nameFolds,{'.','..'})) = [];
-%         fold_detect = size(nameFolds, 1);
-%         file_detect = size(files, 1);
-%         fprintf('Detecting\n');
-% end %detector function
+function [fold_detect,file_detect] = detector(path)
+        cd(path)
+        b = dir();
+        files = dir('*.mat');
+        isub = [b(:).isdir];
+        nameFolds = {b(isub).name}';
+        nameFolds(ismember(nameFolds,{'.','..'})) = [];
+        fold_detect = size(nameFolds, 1);
+        file_detect = size(files, 1);
+        fprintf('Detecting\n');
+end %detector function
 
 function [P1] = notFourier(F) 
         Y = fft(F);                            %fft
@@ -40,8 +40,35 @@ function[] = plotsave(avg)
         close all;
 end %the fft function
 
-
+tstart = tic;
+working_directory = cd;
+addpath(cd)
+addpath matlab
+addpath(start_directory);
 cd (start_directory);
+
+[fold,fil] = detector(start_directory);
+if fil > 0
+    
+    clacker(face_hint, start_directory, whisknum);
+elseif fil == 0
+    fprintf('No mat files in the start directory\n');
+end
+
+if fold > 0
+    target = [start_directory '\**\*.'];
+    fprintf('Scanning all subdirectories from starting directory\n');
+    D = rdir(target);             %// List of all sub-directories
+    for k = 1:length(D)
+        currpath = D(k).name;
+        [~,fil] = detector(currpath);
+        fprintf('Checking %s for tif files\n', currpath);
+        if fil > 0
+            
+            
+        end
+    end
+
 p = dir('jit*.mat');                          %directory of jit mat files
 jitlength = length(p);                        %length of directory of jit files
 x = dir('*.mat');                             %directory of all .mat files including jit
@@ -49,7 +76,6 @@ x = dir('*.mat');                             %directory of all .mat files inclu
         x = x(1:jitlength);                   %returns just .mat files w/o jit
     end                                 
 fil = length(x);                              %length of directory of .mat files w/o jit files
-T = fil*(0.8);                                %time interval graphed
 
     if fil < 1
      fprintf('error: no files found.\n');
